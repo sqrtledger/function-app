@@ -1,0 +1,18 @@
+{
+  "bindings": [
+    {
+      "authLevel": "anonymous",
+      "direction": "in",
+      "methods": ["post"],
+      "name": "req",
+      "route": "v1/{accountReference}/transactions",
+      "type": "httpTrigger"
+    },
+    {
+      "direction": "out",
+      "name": "res",
+      "type": "http"
+    }
+  ],
+  "scriptFile": "../dist/transactions/index.js"
+}
