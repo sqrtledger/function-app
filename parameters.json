@@ -6,13 +6,13 @@
       "value": "ef5781f2-319e-4710-84e9-f3d0139e46bb"
     },
     "name": {
-      "value": "sqrt-ledger"
+      "value": "sqrt-ledger-function-app"
     },
     "location": {
       "value": "West Europe"
     },
     "hostingPlanName": {
-      "value": "sqrt-ledger"
+      "value": "sqrt-ledger-app-service-plan"
     },
     "serverFarmResourceGroup": {
       "value": "sqrt-ledger"
@@ -21,7 +21,7 @@
       "value": false
     },
     "storageAccountName": {
-      "value": "sqrtledger"
+      "value": "sqrtledgerstorageaccount"
     },
     "sku": {
       "value": "Dynamic"
