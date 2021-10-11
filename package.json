@@ -4,10 +4,11 @@
   "description": "The Open-Source API-First Ledger",
   "scripts": {
     "build": "tsc",
-    "watch": "tsc -w",
+    "lint": "prettier --write --config prettier.config.js --list-different **/*.ts",
     "prestart": "npm run build",
     "start": "func start",
-    "test": "echo \"No tests yet...\""
+    "test": "echo \"No tests yet...\"",
+    "watch": "tsc -w"
   },
   "dependencies": {
     "sqrtledger-core": "^1.0.0-alpha.1"
