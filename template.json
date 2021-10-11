@@ -55,7 +55,7 @@
       "location": "[parameters('location')]",
       "tags": {},
       "dependsOn": [
-        "microsoft.insights/components/application-insights-977",
+        "microsoft.insights/components/sqrt-ledger-application-insights",
         "[concat('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
         "[concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
       ],
@@ -73,11 +73,11 @@
             },
             {
               "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-              "value": "[reference('microsoft.insights/components/application-insights-977', '2015-05-01').InstrumentationKey]"
+              "value": "[reference('microsoft.insights/components/sqrt-ledger-application-insights', '2015-05-01').InstrumentationKey]"
             },
             {
               "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
-              "value": "[reference('microsoft.insights/components/application-insights-977', '2015-05-01').ConnectionString]"
+              "value": "[reference('microsoft.insights/components/sqrt-ledger-application-insights', '2015-05-01').ConnectionString]"
             },
             {
               "name": "AzureWebJobsStorage",
@@ -117,7 +117,7 @@
     },
     {
       "apiVersion": "2020-02-02-preview",
-      "name": "application-insights-977",
+      "name": "sqrt-ledger-application-insights",
       "type": "microsoft.insights/components",
       "location": "westeurope",
       "tags": {},
