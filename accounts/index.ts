@@ -1,12 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import * as MongoDb from 'mongodb';
-import {
-  IAccountRepository,
-  ITransactionRepository,
-  MongoDbAccountRepository,
-  MongoDbTransactionRepository,
-  TransactionService,
-} from 'sqrtledger-core';
+import { IAccountRepository, MongoDbAccountRepository } from 'sqrtledger-core';
 
 let mongoClient: MongoDb.MongoClient | null = null;
 
@@ -24,30 +18,25 @@ const httpTrigger: AzureFunction = async function (
 
   const collectionAccounts: MongoDb.Collection = db.collection('accounts');
 
-  const collectionTransactions: MongoDb.Collection =
-    db.collection('transactions');
-
   const accountRepository: IAccountRepository = new MongoDbAccountRepository(
     collectionAccounts
   );
 
-  const transactionRepository: ITransactionRepository =
-    new MongoDbTransactionRepository(collectionTransactions);
-
-  const transactionService: TransactionService = new TransactionService(
-    accountRepository,
-    transactionRepository
-  );
-
   try {
-    const result = await transactionService.create(
-      req.params.accountReference,
-      req.body.amount,
-      req.body.collectionReference,
-      req.body.metadata,
-      req.body.reference,
-      req.body.type
-    );
+    const result = await accountRepository.create({
+      availableBalance: 0,
+      balance: 0,
+      label: req.body.label,
+      metadata: req.body.metadata,
+      name: req.body.name,
+      reference: req.params.accountReference,
+      settings: {
+        allowCreditTransactions: true,
+        allowDebitTransactions: true,
+        allowTransactions: true,
+      },
+      status: req.body.active ? 'active' : 'inactive',
+    });
 
     context.res = {
       body: result,

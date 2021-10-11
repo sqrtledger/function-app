@@ -55,7 +55,7 @@
       "location": "[parameters('location')]",
       "tags": {},
       "dependsOn": [
-        "microsoft.insights/components/application-insights-980",
+        "microsoft.insights/components/application-insights-977",
         "[concat('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
         "[concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
       ],
@@ -73,11 +73,11 @@
             },
             {
               "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-              "value": "[reference('microsoft.insights/components/application-insights-980', '2015-05-01').InstrumentationKey]"
+              "value": "[reference('microsoft.insights/components/application-insights-977', '2015-05-01').InstrumentationKey]"
             },
             {
               "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
-              "value": "[reference('microsoft.insights/components/application-insights-980', '2015-05-01').ConnectionString]"
+              "value": "[reference('microsoft.insights/components/application-insights-977', '2015-05-01').ConnectionString]"
             },
             {
               "name": "AzureWebJobsStorage",
@@ -85,7 +85,7 @@
             },
             {
               "name": "CONNECTION_STRING",
-              "value": ""
+              "value": "mongodb+srv://default:hT5soFjmfWOVMI3U@startup-55-eoqhx.azure.mongodb.net/default?retryWrites=true&w=majority"
             }
           ],
           "use32BitWorkerProcess": "[parameters('use32BitWorkerProcess')]",
@@ -117,7 +117,7 @@
     },
     {
       "apiVersion": "2020-02-02-preview",
-      "name": "application-insights-980",
+      "name": "application-insights-977",
       "type": "microsoft.insights/components",
       "location": "westeurope",
       "tags": {},

@@ -6,22 +6,22 @@
       "value": "ef5781f2-319e-4710-84e9-f3d0139e46bb"
     },
     "name": {
-      "value": "function-app-980"
+      "value": "sqrt-ledger"
     },
     "location": {
       "value": "West Europe"
     },
     "hostingPlanName": {
-      "value": "app-service-plan-function-apps-980"
+      "value": "sqrt-ledger"
     },
     "serverFarmResourceGroup": {
-      "value": "getntified"
+      "value": "sqrt-ledger"
     },
     "alwaysOn": {
       "value": false
     },
     "storageAccountName": {
-      "value": "storageaccount980"
+      "value": "sqrtledger"
     },
     "sku": {
       "value": "Dynamic"
