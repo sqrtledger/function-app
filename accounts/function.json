@@ -5,7 +5,7 @@
       "direction": "in",
       "methods": ["post"],
       "name": "req",
-      "route": "v1/accounts/{accountReference}",
+      "route": "v1/accounts",
       "type": "httpTrigger"
     },
     {

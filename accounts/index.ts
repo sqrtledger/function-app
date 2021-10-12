@@ -29,7 +29,7 @@ const httpTrigger: AzureFunction = async function (
       label: req.body.label,
       metadata: req.body.metadata,
       name: req.body.name,
-      reference: req.params.accountReference,
+      reference: req.body.reference,
       settings: {
         allowCreditTransactions: true,
         allowDebitTransactions: true,
