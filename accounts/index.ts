@@ -1,29 +1,14 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
-import * as MongoDb from 'mongodb';
-import { IAccountRepository, MongoDbAccountRepository } from 'sqrtledger-core';
-
-let mongoClient: MongoDb.MongoClient | null = null;
+import { Container } from '../core';
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
   req: HttpRequest
 ): Promise<void> {
-  if (!mongoClient) {
-    mongoClient = await MongoDb.MongoClient.connect(
-      process.env.CONNECTION_STRING
-    );
-  }
-
-  const db: MongoDb.Db = mongoClient.db('sqrtledger');
-
-  const collectionAccounts: MongoDb.Collection = db.collection('accounts');
-
-  const accountRepository: IAccountRepository = new MongoDbAccountRepository(
-    collectionAccounts
-  );
+  const container = await Container.get();
 
   try {
-    const result = await accountRepository.create({
+    const result = await container.accountRepository.create({
       availableBalance: 0,
       balance: 0,
       label: req.body.label,
