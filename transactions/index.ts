@@ -9,7 +9,7 @@ const httpTrigger: AzureFunction = async function (
 
   try {
     const result = await container.transactionService.create(
-      req.params.accountReference,
+      req.params.reference,
       req.body.amount,
       req.body.collectionReference,
       req.body.metadata,
@@ -18,7 +18,7 @@ const httpTrigger: AzureFunction = async function (
     );
 
     context.res = {
-      body: result,
+      body: result.transaction,
     };
   } catch (error) {
     context.res = {

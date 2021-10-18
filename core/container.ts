@@ -1,5 +1,6 @@
 import * as MongoDb from 'mongodb';
 import {
+  AccountService,
   IAccountRepository,
   ITransactionRepository,
   MongoDbAccountRepository,
@@ -10,12 +11,14 @@ import {
 export class Container {
   protected static instance: {
     accountRepository: IAccountRepository;
+    accountService: AccountService;
     transactionRepository: ITransactionRepository;
     transactionService: TransactionService;
   } | null = null;
 
   public static async get(): Promise<{
     accountRepository: IAccountRepository;
+    accountService: AccountService;
     transactionRepository: ITransactionRepository;
     transactionService: TransactionService;
   }> {
@@ -38,6 +41,10 @@ export class Container {
       collectionAccounts
     );
 
+    const accountService: AccountService = new AccountService(
+      accountRepository
+    );
+
     const transactionRepository: ITransactionRepository =
       new MongoDbTransactionRepository(collectionTransactions);
 
@@ -48,6 +55,7 @@ export class Container {
 
     Container.instance = {
       accountRepository,
+      accountService,
       transactionRepository,
       transactionService,
     };

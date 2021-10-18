@@ -3,9 +3,9 @@
     {
       "authLevel": "anonymous",
       "direction": "in",
-      "methods": ["post"],
+      "methods": ["delete", "get", "post"],
       "name": "req",
-      "route": "v1/accounts",
+      "route": "v1/accounts/{reference}",
       "type": "httpTrigger"
     },
     {
