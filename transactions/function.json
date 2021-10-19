@@ -3,7 +3,7 @@
     {
       "authLevel": "anonymous",
       "direction": "in",
-      "methods": ["post"],
+      "methods": ["get", "post"],
       "name": "req",
       "route": "v1/accounts/{reference}/transactions",
       "type": "httpTrigger"
