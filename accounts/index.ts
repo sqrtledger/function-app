@@ -6,9 +6,9 @@ const httpTrigger: AzureFunction = async function (
   context: Context,
   req: HttpRequest
 ): Promise<void> {
-  const container = await Container.get();
-
   try {
+    const container = await Container.get();
+
     if (req.method === 'DELETE') {
       await container.accountService.delete(req.params.reference);
 
