@@ -11,7 +11,7 @@ const httpTrigger: AzureFunction = async function (
 
     if (req.method === 'GET') {
       const transactions: Array<ITransaction> =
-        await container.transactionService.findAll(req.params.reference);
+        await container.transactionService.findAll(req.params.reference, {});
 
       context.res = {
         body: transactions,
