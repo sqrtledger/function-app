@@ -1,6 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import { IAccount } from 'sqrtledger-core';
-import { Container } from '../core';
+import { AccountPostValidator, Container } from '../core';
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -32,6 +32,8 @@ const httpTrigger: AzureFunction = async function (
     }
 
     if (req.method === 'POST') {
+      AccountPostValidator.validate(req.body);
+
       const account: IAccount = await container.accountService.create({
         availableBalance: 0,
         balance: 0,
@@ -40,9 +42,9 @@ const httpTrigger: AzureFunction = async function (
         name: req.body.name,
         reference: req.params.reference,
         settings: {
-          allowCreditTransactions: true,
-          allowDebitTransactions: true,
-          allowTransactions: true,
+          allowCreditTransactions: req.body.settings.allowCreditTransactions,
+          allowDebitTransactions: req.body.settings.allowDebitTransactions,
+          allowTransactions: req.body.settings.allowTransactions,
         },
         status: req.body.active ? 'active' : 'inactive',
       });
