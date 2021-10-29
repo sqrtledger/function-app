@@ -6,7 +6,7 @@ export class AccountPostValidator {
     label: Joi.string().min(5).max(32).required(),
     metadata: Joi.object().unknown().required(),
     name: Joi.string().min(5).max(32).required(),
-    reference: Joi.string().alphanum().min(5).max(32).required(),
+    reference: Joi.string().min(5).max(32).required(),
     settings: Joi.object({
       allowTransactions: Joi.boolean().required(),
       allowCreditTransactions: Joi.boolean().required(),
