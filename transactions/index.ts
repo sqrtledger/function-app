@@ -9,48 +9,12 @@ const httpTrigger: AzureFunction = async function (
   try {
     const container = await Container.get();
 
-    if (req.method === 'GET') {
-      const transactions: Array<ITransaction> =
-        await container.transactionService.findAll(req.params.reference, {});
+    const transaction: ITransaction | null =
+      await container.transactionService.find(req.params.reference);
 
-      context.res = {
-        body: transactions,
-      };
-
-      return;
-    }
-
-    if (req.method === 'POST') {
-      if (req.body instanceof Array) {
-        const result =
-          await container.transactionService.createProcessCompleteMultiple(
-            req.body
-          );
-
-        context.res = {
-          body: result,
-        };
-
-        return;
-      }
-
-      if (req.body instanceof Object) {
-        const result = await container.transactionService.createProcessComplete(
-          req.params.reference,
-          req.body.amount,
-          req.body.collectionReference,
-          req.body.metadata,
-          req.body.reference,
-          req.body.type
-        );
-
-        context.res = {
-          body: result.transaction,
-        };
-
-        return;
-      }
-    }
+    context.res = {
+      body: transaction,
+    };
   } catch (error) {
     context.log(`[ERROR]: ${error.message}`);
 
