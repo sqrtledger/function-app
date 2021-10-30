@@ -1,0 +1,60 @@
+swagger: "2.0"
+info:
+  contact:
+    email: "info@startup55.io"
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dapibus ipsum lectus, id gravida massa pellentesque vitae. Donec at commodo orci, eget consequat risus. Pellentesque molestie mattis sem, sed condimentum nulla rutrum vel."
+  license:
+    name: "MIT"
+    url: "https://opensource.org/licenses/MIT"
+  termsOfService: "http://swagger.io/terms/"
+  title: "Sqrt Ledger"
+  version: "1.0.0"
+host: "sqrt-ledger-function-app.azurewebsites.net"
+basePath: "/api/v1"
+schemes:
+- "https"
+paths:
+  /accounts/{reference}:
+    post:
+      summary: "Create an account"
+      description: ""
+      operationId: "postAccountReference"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "reference"
+        type: "string"
+        required: true
+        description: Numeric ID of the user to get
+      - in: "body"
+        name: "body"
+        description: "Pet object that needs to be added to the store"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            active:
+              type: "boolean"
+            label:
+              type: "string"
+            metadata:
+              type: "object"
+            name:
+              type: "string"
+            reference:
+              type: "string"
+            settings:
+              type: "object"
+              properties:
+                allowTransactions:
+                  type: "boolean"
+                allowCreditTransactions:
+                  type: "boolean"
+                allowDebitTransactions:
+                  type: "boolean"
+      responses:
+        "405":
+          description: "Invalid input"
