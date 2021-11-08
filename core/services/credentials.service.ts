@@ -6,7 +6,7 @@ export class CredentialsService {
 
     const keyBuffer: Buffer = Crypto.createHash('sha256').update(key).digest();
 
-    const strBuffer: Buffer = Buffer.from(str);
+    const strBuffer: Buffer = Buffer.from(str, 'base64');
 
     const decipher = Crypto.createDecipheriv(
       'aes-256-ctr',
