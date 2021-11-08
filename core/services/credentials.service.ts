@@ -1,8 +1,7 @@
 import * as Crypto from 'crypto';
-import { any } from 'joi';
 
 export class CredentialsService {
-  protected decrypt(key: string, str: string): string {
+  protected decrypt(key: string, str: string): any {
     const ivBuffer: Buffer = Buffer.from(str, 'base64').slice(0, 16);
 
     const keyBuffer: Buffer = Crypto.createHash('sha256').update(key).digest();
@@ -15,14 +14,18 @@ export class CredentialsService {
       ivBuffer
     );
 
-    const decipherUpdateBuffer: string = decipher.update(strBuffer.slice(16)) as any;
+    const decipherUpdateBuffer: Buffer = decipher.update(strBuffer.slice(16));
 
-    const decipherFinalBuffer: string = decipher.final() as any;
+    const decipherFinalBuffer: Buffer = decipher.final();
 
-    return (decipherUpdateBuffer + decipherFinalBuffer) as any;
+    return {
+      ivBuffer,
+      decipherUpdateBuffer,
+      decipherFinalBuffer,
+    };
   }
 
-  protected encrypt(key: string, str: string): string {
+  protected encrypt(key: string, str: string): any {
     const ivBuffer: Buffer = Crypto.randomBytes(16);
 
     const keyBuffer: Buffer = Crypto.createHash('sha256').update(key).digest();
@@ -35,16 +38,16 @@ export class CredentialsService {
 
     const cipherFinalBuffer: Buffer = cipher.final();
 
-    return Buffer.concat([
+    return {
       ivBuffer,
       cipherUpdateBuffer,
       cipherFinalBuffer,
-    ]).toString('base64');
+    };
   }
 
   public async generate(): Promise<{ clientId: string; clientSecret: string }> {
     return {
-      clientId: this.decrypt('hello', this.encrypt('hello', 'world')),
+      clientId: '',
       clientSecret: this.encrypt('hello', 'world'),
     };
   }
