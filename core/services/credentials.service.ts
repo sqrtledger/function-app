@@ -22,6 +22,7 @@ export class CredentialsService {
       ivBuffer,
       decipherUpdateBuffer,
       decipherFinalBuffer,
+      str: decipherUpdateBuffer.toString(),
     };
   }
 
