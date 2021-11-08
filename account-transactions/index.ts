@@ -9,6 +9,22 @@ const httpTrigger: AzureFunction = async function (
   try {
     const container = await Container.get();
 
+    const credentials =
+      await container.credentialsService.authorizationHeaderToCredentials(
+        req.headers['authorization']
+      );
+
+    if (!credentials) {
+      context.res = {
+        body: {
+          message: 'Unauthorized',
+        },
+        status: 401,
+      };
+
+      return;
+    }
+
     if (req.method === 'GET') {
       const transactions: Array<ITransaction> =
         await container.transactionService.findAll(req.params.reference, {});

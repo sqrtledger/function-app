@@ -9,11 +9,12 @@ const httpTrigger: AzureFunction = async function (
   try {
     const container = await Container.get();
 
-    if (
-      !(await container.credentialsService.validateAuthorizationHeader(
+    const credentials =
+      await container.credentialsService.authorizationHeaderToCredentials(
         req.headers['authorization']
-      ))
-    ) {
+      );
+
+    if (!credentials) {
       context.res = {
         body: {
           message: 'Unauthorized',

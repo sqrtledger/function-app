@@ -75,11 +75,11 @@ export class CredentialsService {
     return true;
   }
 
-  public async validateAuthorizationHeader(
+  public async authorizationHeaderToCredentials(
     value: string | null
-  ): Promise<boolean> {
+  ): Promise<{ clientId: string; clientSecret: string } | null> {
     if (!value) {
-      return false;
+      return null;
     }
 
     const valueSplitted: Array<string> = value.split(' ');
@@ -88,7 +88,7 @@ export class CredentialsService {
       valueSplitted.length !== 2 ||
       valueSplitted[0].toLowerCase() !== 'basic'
     ) {
-      return false;
+      return null;
     }
 
     const credentials: string = Buffer.from(
@@ -99,13 +99,20 @@ export class CredentialsService {
     const credentialsSplitted: Array<string> = credentials.split(':');
 
     if (credentialsSplitted.length !== 2) {
-      return false;
+      return null;
     }
 
     const clientId: string = credentialsSplitted[0];
 
     const clientSecret: string = credentialsSplitted[1];
 
-    return this.validate(clientId, clientSecret);
+    if (!this.validate(clientId, clientSecret)) {
+      return null;
+    }
+
+    return {
+      clientId,
+      clientSecret,
+    };
   }
 }
