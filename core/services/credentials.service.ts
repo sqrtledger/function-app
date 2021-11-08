@@ -1,4 +1,5 @@
 import * as Crypto from 'crypto';
+import { any } from 'joi';
 
 export class CredentialsService {
   protected decrypt(key: string, str: string): string {
@@ -14,14 +15,11 @@ export class CredentialsService {
       ivBuffer
     );
 
-    const decipherUpdateBuffer: Buffer = decipher.update(strBuffer.slice(16));
+    const decipherUpdateBuffer: string = decipher.update(strBuffer.slice(16)) as any;
 
-    const decipherFinalBuffer: Buffer = decipher.final();
+    const decipherFinalBuffer: string = decipher.final() as any;
 
-    return Buffer.concat([
-      decipherUpdateBuffer,
-      decipherFinalBuffer,
-    ]).toString();
+    return (decipherUpdateBuffer + decipherFinalBuffer) as any;
   }
 
   protected encrypt(key: string, str: string): string {
