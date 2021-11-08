@@ -91,7 +91,10 @@ export class CredentialsService {
       return false;
     }
 
-    const credentials: string = valueSplitted[1];
+    const credentials: string = Buffer.from(
+      valueSplitted[1],
+      'base64'
+    ).toString();
 
     const credentialsSplitted: Array<string> = credentials.split(':');
 
