@@ -47,7 +47,7 @@ export class CredentialsService {
 
   public async generate(): Promise<{ clientId: string; clientSecret: string }> {
     return {
-      clientId: this.decrypt('hello', this.encrypt('hello', 'world')),
+      clientId: '', //this.decrypt('hello', this.encrypt('hello', 'world')),
       clientSecret: this.encrypt('hello', 'world'),
     };
   }
