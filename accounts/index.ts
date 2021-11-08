@@ -26,7 +26,10 @@ const httpTrigger: AzureFunction = async function (
     }
 
     if (req.method === 'DELETE') {
-      await container.accountService.delete(req.params.reference);
+      await container.accountService.delete(
+        req.params.reference,
+        credentials.clientId
+      );
 
       context.res = {
         body: true,
@@ -37,7 +40,8 @@ const httpTrigger: AzureFunction = async function (
 
     if (req.method === 'GET') {
       const account: IAccount = await container.accountService.find(
-        req.params.reference
+        req.params.reference,
+        credentials.clientId
       );
 
       context.res = {
@@ -50,20 +54,23 @@ const httpTrigger: AzureFunction = async function (
     if (req.method === 'POST') {
       AccountPostValidator.validate(req.body, req.params);
 
-      const account: IAccount = await container.accountService.create({
-        availableBalance: 0,
-        balance: 0,
-        label: req.body.label,
-        metadata: req.body.metadata,
-        name: req.body.name,
-        reference: req.params.reference,
-        settings: {
-          allowCreditTransactions: req.body.settings.allowCreditTransactions,
-          allowDebitTransactions: req.body.settings.allowDebitTransactions,
-          allowTransactions: req.body.settings.allowTransactions,
+      const account: IAccount = await container.accountService.create(
+        {
+          availableBalance: 0,
+          balance: 0,
+          label: req.body.label,
+          metadata: req.body.metadata,
+          name: req.body.name,
+          reference: req.params.reference,
+          settings: {
+            allowCreditTransactions: req.body.settings.allowCreditTransactions,
+            allowDebitTransactions: req.body.settings.allowDebitTransactions,
+            allowTransactions: req.body.settings.allowTransactions,
+          },
+          status: req.body.active ? 'active' : 'inactive',
         },
-        status: req.body.active ? 'active' : 'inactive',
-      });
+        credentials.clientId
+      );
 
       context.res = {
         body: account,

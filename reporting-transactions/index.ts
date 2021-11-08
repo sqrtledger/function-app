@@ -28,7 +28,8 @@ const httpTrigger: AzureFunction = async function (
     const transactions: Array<ITransaction> =
       await container.transactionService.findAll(
         req.params.reference,
-        req.body
+        req.body,
+        credentials.clientId
       );
 
     context.res = {

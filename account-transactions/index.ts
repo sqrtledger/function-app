@@ -27,7 +27,11 @@ const httpTrigger: AzureFunction = async function (
 
     if (req.method === 'GET') {
       const transactions: Array<ITransaction> =
-        await container.transactionService.findAll(req.params.reference, {});
+        await container.transactionService.findAll(
+          req.params.reference,
+          {},
+          credentials.clientId
+        );
 
       context.res = {
         body: transactions,
@@ -40,7 +44,8 @@ const httpTrigger: AzureFunction = async function (
       if (req.body instanceof Array) {
         const result =
           await container.transactionService.createProcessCompleteMultiple(
-            req.body
+            req.body,
+            credentials.clientId
           );
 
         context.res = {
@@ -57,7 +62,8 @@ const httpTrigger: AzureFunction = async function (
           req.body.collectionReference,
           req.body.metadata,
           req.body.reference,
-          req.body.type
+          req.body.type,
+          credentials.clientId
         );
 
         context.res = {
