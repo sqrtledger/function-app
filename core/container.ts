@@ -59,7 +59,7 @@ export class Container {
     Container.instance = {
       accountRepository,
       accountService,
-      credentialsService: new CredentialsService(),
+      credentialsService: new CredentialsService('Zq2e]C6s}&-Q$JLY'),
       transactionRepository,
       transactionService,
     };

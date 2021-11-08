@@ -1,7 +1,10 @@
 import * as Crypto from 'crypto';
+import * as Uuid from 'uuid';
 
 export class CredentialsService {
-  protected decrypt(key: string, str: string): any {
+  constructor(protected secret: string) {}
+
+  protected decryptAes256Ctr(key: string, str: string): string {
     const ivBuffer: Buffer = Buffer.from(str, 'base64').slice(0, 16);
 
     const keyBuffer: Buffer = Crypto.createHash('sha256').update(key).digest();
@@ -18,15 +21,13 @@ export class CredentialsService {
 
     const decipherFinalBuffer: Buffer = decipher.final();
 
-    return {
-      ivBuffer,
+    return Buffer.concat([
       decipherUpdateBuffer,
       decipherFinalBuffer,
-      str: decipherUpdateBuffer.toString(),
-    };
+    ]).toString();
   }
 
-  protected encrypt(key: string, str: string): any {
+  protected encryptAes256ctr(key: string, str: string): string {
     const ivBuffer: Buffer = Crypto.randomBytes(16);
 
     const keyBuffer: Buffer = Crypto.createHash('sha256').update(key).digest();
@@ -46,10 +47,22 @@ export class CredentialsService {
     ]).toString('base64');
   }
 
+  protected hmac256(key: string, str: string): string {
+    return Crypto.createHmac('sha256', key)
+      .update(str)
+      .digest()
+      .toString('base64');
+  }
+
   public async generate(): Promise<{ clientId: string; clientSecret: string }> {
+    const clientId: string = Uuid.v4();
+
     return {
-      clientId: this.decrypt('hello', this.encrypt('hello', 'world')),
-      clientSecret: this.encrypt('hello', 'world'),
+      clientId: clientId,
+      clientSecret: `${this.encryptAes256ctr(
+        this.secret,
+        clientId
+      )}|${this.hmac256(this.secret, clientId)}`,
     };
   }
 }
