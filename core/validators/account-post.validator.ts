@@ -27,7 +27,7 @@ export class AccountPostValidator {
     }
 
     const joiValidationResultParams =
-      AccountPostValidator.joiObjectSchemaParams.validate(body);
+      AccountPostValidator.joiObjectSchemaParams.validate(params);
 
     if (joiValidationResultParams.error) {
       throw new Error(joiValidationResultParams.error.message);
