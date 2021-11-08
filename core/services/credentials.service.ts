@@ -38,11 +38,11 @@ export class CredentialsService {
 
     const cipherFinalBuffer: Buffer = cipher.final();
 
-    return {
+    return Buffer.concat([
       ivBuffer,
       cipherUpdateBuffer,
       cipherFinalBuffer,
-    };
+    ]).toString('base64');
   }
 
   public async generate(): Promise<{ clientId: string; clientSecret: string }> {
