@@ -9,6 +9,22 @@ const httpTrigger: AzureFunction = async function (
   try {
     const container = await Container.get();
 
+    if (!req.headers['authorization']) {
+      context.log('FALSE 1');
+    }
+
+    const valueSplitted: Array<string> =
+      req.headers['authorization'].split(' ');
+
+    context.log(JSON.stringify(valueSplitted));
+
+    if (
+      valueSplitted.length !== 2 ||
+      valueSplitted[0].toLowerCase() !== 'basic'
+    ) {
+      context.log('FALSE 2');
+    }
+
     if (
       container.credentialsService.validateAuthorizationHeader(
         req.headers['authorization']
