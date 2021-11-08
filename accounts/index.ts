@@ -9,6 +9,21 @@ const httpTrigger: AzureFunction = async function (
   try {
     const container = await Container.get();
 
+    if (
+      container.credentialsService.validateAuthorizationHeader(
+        req.headers['authorization']
+      )
+    ) {
+      context.res = {
+        body: {
+          message: 'Unauthorized',
+        },
+        status: 401,
+      };
+
+      return;
+    }
+
     if (req.method === 'DELETE') {
       await container.accountService.delete(req.params.reference);
 
