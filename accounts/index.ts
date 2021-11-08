@@ -32,7 +32,7 @@ const httpTrigger: AzureFunction = async function (
     }
 
     if (req.method === 'POST') {
-      AccountPostValidator.validate(req.body);
+      AccountPostValidator.validate(req.body, req.params);
 
       const account: IAccount = await container.accountService.create({
         availableBalance: 0,

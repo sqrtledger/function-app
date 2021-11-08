@@ -1,7 +1,7 @@
 import * as Joi from 'joi';
 
 export class AccountPostValidator {
-  protected static joiObjectSchema = Joi.object({
+  protected static joiObjectSchemaBody = Joi.object({
     active: Joi.boolean().required(),
     label: Joi.string().min(5).max(32).required(),
     metadata: Joi.object().unknown().required(),
@@ -14,12 +14,23 @@ export class AccountPostValidator {
     }).required(),
   });
 
-  public static validate(obj: any): void {
-    const joiValidationResult =
-      AccountPostValidator.joiObjectSchema.validate(obj);
+  protected static joiObjectSchemaParams = Joi.object({
+    reference: Joi.string().min(5).max(32).required(),
+  });
 
-    if (joiValidationResult.error) {
-      throw new Error(joiValidationResult.error.message);
+  public static validate(body: any, params: any): void {
+    const joiValidationResultBody =
+      AccountPostValidator.joiObjectSchemaBody.validate(body);
+
+    if (joiValidationResultBody.error) {
+      throw new Error(joiValidationResultBody.error.message);
+    }
+
+    const joiValidationResultParams =
+      AccountPostValidator.joiObjectSchemaParams.validate(body);
+
+    if (joiValidationResultParams.error) {
+      throw new Error(joiValidationResultParams.error.message);
     }
   }
 }

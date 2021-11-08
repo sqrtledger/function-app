@@ -15,6 +15,54 @@ schemes:
 - "https"
 paths:
   /accounts/{reference}:
+    get:
+      summary: "Get an account"
+      description: ""
+      operationId: "getAccountReference"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "reference"
+        type: "string"
+        required: true
+        description: Unique account reference. Only -, ., = and alphanumeric characters allowed.
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            type: "object"
+            properties:
+              availableBalance:
+                type: "number"
+              balance:
+                type: "number"
+              label:
+                type: "string"
+              metadata:
+                type: "object"
+              name:
+                type: "string"
+              reference:
+                type: "string"
+              settings:
+                type: "object"
+                properties:
+                  allowTransactions:
+                    type: "boolean"
+                  allowCreditTransactions:
+                    type: "boolean"
+                  allowDebitTransactions:
+                    type: "boolean"
+              status:
+                enum:
+                  - active
+                  - inactive
+                type: "string"
+        "500":
+          description: "Internal Server Error"
     post:
       summary: "Create an account"
       description: ""
@@ -28,7 +76,7 @@ paths:
         name: "reference"
         type: "string"
         required: true
-        description: Numeric ID of the user to get
+        description: Unique account reference. Only -, ., = and alphanumeric characters allowed.
       - in: "body"
         name: "body"
         description: "Pet object that needs to be added to the store"
@@ -56,5 +104,36 @@ paths:
                 allowDebitTransactions:
                   type: "boolean"
       responses:
-        "405":
-          description: "Invalid input"
+        "200":
+          description: "Success"
+          schema:
+            type: "object"
+            properties:
+              availableBalance:
+                type: "number"
+              balance:
+                type: "number"
+              label:
+                type: "string"
+              metadata:
+                type: "object"
+              name:
+                type: "string"
+              reference:
+                type: "string"
+              settings:
+                type: "object"
+                properties:
+                  allowTransactions:
+                    type: "boolean"
+                  allowCreditTransactions:
+                    type: "boolean"
+                  allowDebitTransactions:
+                    type: "boolean"
+              status:
+                enum:
+                  - active
+                  - inactive
+                type: "string"
+        "500":
+          description: "Internal Server Error"
