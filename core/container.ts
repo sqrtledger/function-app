@@ -1,9 +1,12 @@
 import * as MongoDb from 'mongodb';
 import {
   AccountService,
+  CustomerService,
   IAccountRepository,
+  ICustomerRepository,
   ITransactionRepository,
   MongoDbAccountRepository,
+  MongoDbCustomerRepository,
   MongoDbTransactionRepository,
   TransactionService,
 } from 'sqrtledger-core';
@@ -14,6 +17,7 @@ export class Container {
     accountRepository: IAccountRepository;
     accountService: AccountService;
     credentialsService: CredentialsService;
+    customerService: CustomerService;
     transactionRepository: ITransactionRepository;
     transactionService: TransactionService;
   } | null = null;
@@ -22,6 +26,7 @@ export class Container {
     accountRepository: IAccountRepository;
     accountService: AccountService;
     credentialsService: CredentialsService;
+    customerService: CustomerService;
     transactionRepository: ITransactionRepository;
     transactionService: TransactionService;
   }> {
@@ -48,6 +53,15 @@ export class Container {
       accountRepository
     );
 
+    const collectionCustomers: MongoDb.Collection = db.collection('customers');
+
+    const customerRepository: ICustomerRepository =
+      new MongoDbCustomerRepository(collectionCustomers);
+
+    const customerService: CustomerService = new CustomerService(
+      customerRepository
+    );
+
     const transactionRepository: ITransactionRepository =
       new MongoDbTransactionRepository(collectionTransactions);
 
@@ -60,6 +74,7 @@ export class Container {
       accountRepository,
       accountService,
       credentialsService: new CredentialsService('Zq2e]C6s}&-Q$JLY'),
+      customerService,
       transactionRepository,
       transactionService,
     };

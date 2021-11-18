@@ -59,7 +59,9 @@ const httpTrigger: AzureFunction = async function (
         const result = await container.transactionService.createProcessComplete(
           req.params.reference,
           req.body.amount,
+          req.body.card,
           req.body.collectionReference,
+          req.body.customer,
           req.body.metadata,
           req.body.reference,
           req.body.type,
