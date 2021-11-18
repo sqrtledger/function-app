@@ -41,20 +41,6 @@ const httpTrigger: AzureFunction = async function (
     }
 
     if (req.method === 'POST') {
-      if (req.body instanceof Array) {
-        const result =
-          await container.transactionService.createProcessCompleteMultiple(
-            req.body,
-            credentials.clientId
-          );
-
-        context.res = {
-          body: result,
-        };
-
-        return;
-      }
-
       if (req.body instanceof Object) {
         const result = await container.transactionService.createProcessComplete(
           req.params.reference,

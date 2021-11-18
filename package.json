@@ -13,7 +13,7 @@
   "dependencies": {
     "joi": "^17.4.2",
     "mongodb": "^4.2.0",
-    "sqrtledger-core": "^1.0.0-alpha.33",
+    "sqrtledger-core": "^1.0.0-alpha.34",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

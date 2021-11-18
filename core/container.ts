@@ -42,6 +42,8 @@ export class Container {
 
     const collectionAccounts: MongoDb.Collection = db.collection('accounts');
 
+    const collectionCustomers: MongoDb.Collection = db.collection('customers');
+
     const collectionTransactions: MongoDb.Collection =
       db.collection('transactions');
 
@@ -49,21 +51,20 @@ export class Container {
       collectionAccounts
     );
 
+    const customerRepository: ICustomerRepository =
+      new MongoDbCustomerRepository(collectionCustomers);
+
+    const transactionRepository: ITransactionRepository =
+      new MongoDbTransactionRepository(collectionTransactions);
+
     const accountService: AccountService = new AccountService(
       accountRepository
     );
 
-    const collectionCustomers: MongoDb.Collection = db.collection('customers');
-
-    const customerRepository: ICustomerRepository =
-      new MongoDbCustomerRepository(collectionCustomers);
-
     const customerService: CustomerService = new CustomerService(
-      customerRepository
+      customerRepository,
+      transactionRepository
     );
-
-    const transactionRepository: ITransactionRepository =
-      new MongoDbTransactionRepository(collectionTransactions);
 
     const transactionService: TransactionService = new TransactionService(
       accountRepository,
