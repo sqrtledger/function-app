@@ -1,5 +1,5 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
-import { ICustomer } from 'sqrtledger-core';
+import { ICard, ICustomer } from 'sqrtledger-core';
 import { Container } from '../core';
 
 const httpTrigger: AzureFunction = async function (
@@ -50,7 +50,18 @@ const httpTrigger: AzureFunction = async function (
     );
 
     if (customer) {
-      // TODO
+      const card: ICard | null =
+        customer.cards.find(
+          (x) =>
+            x.bankIdentificationNumber === body.data.authorization.bin &&
+            x.expirationMonth === body.data.authorization.exp_month &&
+            x.expirationYear === body.data.authorization.exp_year &&
+            x.last4Digits === body.data.authorization.last4
+        ) || null;
+
+      if (!card) {
+        customer.cards.push(card);
+      }
     } else {
       customer = {
         cards: [
