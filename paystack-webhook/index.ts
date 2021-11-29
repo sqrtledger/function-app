@@ -1,6 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import { ICard, ICustomer } from 'sqrtledger-core';
-import { Container } from '../core';
+import { AuthorizationHelper, Container } from '../core';
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -30,7 +30,10 @@ const httpTrigger: AzureFunction = async function (
         customer: {
           email: string;
         };
-        metadata: { accountReference: string; tenantId: string };
+        metadata: {
+          accessToken: string;
+          accountReference: string;
+        };
         reference: string;
       };
       event: string;
@@ -46,7 +49,7 @@ const httpTrigger: AzureFunction = async function (
 
     let customer: ICustomer | null = await container.customerService.find(
       body.data.customer.email,
-      body.data.metadata.tenantId
+      AuthorizationHelper.getSub(body.data.metadata.accessToken)
     );
 
     if (customer) {
@@ -94,7 +97,7 @@ const httpTrigger: AzureFunction = async function (
         metadata: {},
         name: null,
       },
-      body.data.metadata.tenantId
+      AuthorizationHelper.getSub(body.data.metadata.accessToken)
     );
 
     await container.transactionService.createProcessComplete(

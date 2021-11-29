@@ -1,6 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import { ITransaction } from 'sqrtledger-core';
-import { Container } from '../core';
+import { Container, AuthorizationHelper } from '../core';
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -9,12 +9,11 @@ const httpTrigger: AzureFunction = async function (
   try {
     const container = await Container.get();
 
-    const credentials =
-      await container.credentialsService.authorizationHeaderToCredentials(
-        req.headers['authorization']
-      );
+    const tenantId: string | null = AuthorizationHelper.getSubFromHeader(
+      req.headers['authorization']
+    );
 
-    if (!credentials) {
+    if (!tenantId) {
       context.res = {
         body: {
           message: 'Unauthorized',
@@ -30,7 +29,7 @@ const httpTrigger: AzureFunction = async function (
         await container.transactionService.findAll(
           req.params.reference,
           {},
-          credentials.clientId
+          tenantId
         );
 
       context.res = {
@@ -51,7 +50,7 @@ const httpTrigger: AzureFunction = async function (
           req.body.metadata,
           req.body.reference,
           req.body.type,
-          credentials.clientId
+          tenantId
         );
 
         context.res = {

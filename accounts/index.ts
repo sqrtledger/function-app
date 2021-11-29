@@ -1,6 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import { IAccount } from 'sqrtledger-core';
-import { AccountPostValidator, Container } from '../core';
+import { AccountPostValidator, Container, AuthorizationHelper } from '../core';
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -9,12 +9,11 @@ const httpTrigger: AzureFunction = async function (
   try {
     const container = await Container.get();
 
-    const credentials =
-      await container.credentialsService.authorizationHeaderToCredentials(
-        req.headers['authorization']
-      );
+    const tenantId: string | null = AuthorizationHelper.getSubFromHeader(
+      req.headers['authorization']
+    );
 
-    if (!credentials) {
+    if (!tenantId) {
       context.res = {
         body: {
           message: 'Unauthorized',
@@ -26,10 +25,7 @@ const httpTrigger: AzureFunction = async function (
     }
 
     if (req.method === 'DELETE') {
-      await container.accountService.delete(
-        req.params.reference,
-        credentials.clientId
-      );
+      await container.accountService.delete(req.params.reference, tenantId);
 
       context.res = {
         body: true,
@@ -41,7 +37,7 @@ const httpTrigger: AzureFunction = async function (
     if (req.method === 'GET') {
       const account: IAccount = await container.accountService.find(
         req.params.reference,
-        credentials.clientId
+        tenantId
       );
 
       context.res = {
@@ -69,7 +65,7 @@ const httpTrigger: AzureFunction = async function (
           },
           status: req.body.active ? 'active' : 'inactive',
         },
-        credentials.clientId
+        tenantId
       );
 
       context.res = {

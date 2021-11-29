@@ -10,13 +10,11 @@ import {
   MongoDbTransactionRepository,
   TransactionService,
 } from 'sqrtledger-core';
-import { CredentialsService } from './services';
 
 export class Container {
   protected static instance: {
     accountRepository: IAccountRepository;
     accountService: AccountService;
-    credentialsService: CredentialsService;
     customerService: CustomerService;
     transactionRepository: ITransactionRepository;
     transactionService: TransactionService;
@@ -25,7 +23,6 @@ export class Container {
   public static async get(): Promise<{
     accountRepository: IAccountRepository;
     accountService: AccountService;
-    credentialsService: CredentialsService;
     customerService: CustomerService;
     transactionRepository: ITransactionRepository;
     transactionService: TransactionService;
@@ -74,7 +71,6 @@ export class Container {
     Container.instance = {
       accountRepository,
       accountService,
-      credentialsService: new CredentialsService('Zq2e]C6s}&-Q$JLY'),
       customerService,
       transactionRepository,
       transactionService,
