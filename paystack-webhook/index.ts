@@ -120,7 +120,8 @@ const httpTrigger: AzureFunction = async function (
         : null,
       body.data.metadata,
       body.data.reference,
-      'credit'
+      'credit',
+      AuthorizationHelper.getSub(body.data.metadata.accessToken)
     );
 
     context.res = {
