@@ -9,8 +9,6 @@ const httpTrigger: AzureFunction = async function (
   try {
     const container = await Container.get();
 
-    context.log(req.headers['authorization']);
-
     const tenantId: string | null = AuthorizationHelper.getSubFromHeader(
       req.headers['authorization']
     );

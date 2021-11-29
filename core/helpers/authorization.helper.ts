@@ -6,7 +6,7 @@ export class AuthorizationHelper {
       return null;
     }
 
-    return JwtDecode(value[1]);
+    return JwtDecode(value);
   }
 
   public static decodeFromHeader(value: string): { sub: string } {
