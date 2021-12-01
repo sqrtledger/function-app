@@ -1,48 +1,48 @@
-import JwtDecode from 'jwt-decode';
+// import JwtDecode from 'jwt-decode';
 
-export class AuthorizationHelper {
-  public static decode(value: string): any {
-    if (!value) {
-      return null;
-    }
+// export class AuthorizationHelper {
+//   public static decode(value: string): any {
+//     if (!value) {
+//       return null;
+//     }
 
-    return JwtDecode(value);
-  }
+//     return JwtDecode(value);
+//   }
 
-  public static decodeFromHeader(value: string): { sub: string } {
-    if (!value) {
-      return null;
-    }
+//   public static decodeFromHeader(value: string): { sub: string } {
+//     if (!value) {
+//       return null;
+//     }
 
-    const valueSplitted: Array<string> = value.split(' ');
+//     const valueSplitted: Array<string> = value.split(' ');
 
-    if (
-      valueSplitted.length !== 2 ||
-      valueSplitted[0].toLowerCase() !== 'bearer'
-    ) {
-      return null;
-    }
+//     if (
+//       valueSplitted.length !== 2 ||
+//       valueSplitted[0].toLowerCase() !== 'bearer'
+//     ) {
+//       return null;
+//     }
 
-    return this.decode(valueSplitted[1]);
-  }
+//     return this.decode(valueSplitted[1]);
+//   }
 
-  public static getSub(value: string): string | null {
-    if (!value) {
-      return null;
-    }
+//   public static getSub(value: string): string | null {
+//     if (!value) {
+//       return null;
+//     }
 
-    const obj = this.decode(value);
+//     const obj = this.decode(value);
 
-    return obj.sub;
-  }
+//     return obj.sub;
+//   }
 
-  public static getSubFromHeader(value: string): string | null {
-    if (!value) {
-      return null;
-    }
+//   public static getSubFromHeader(value: string): string | null {
+//     if (!value) {
+//       return null;
+//     }
 
-    const obj = this.decodeFromHeader(value);
+//     const obj = this.decodeFromHeader(value);
 
-    return obj.sub;
-  }
-}
+//     return obj.sub;
+//   }
+// }

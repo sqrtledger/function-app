@@ -1,6 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import { ICard, ICustomer } from 'sqrtledger-core';
-import { AuthorizationHelper, Container } from '../core';
+import { Container } from '../core';
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -31,7 +31,6 @@ const httpTrigger: AzureFunction = async function (
           email: string;
         };
         metadata: {
-          accessToken: string;
           accountReference: string;
         };
         reference: string;
@@ -48,8 +47,7 @@ const httpTrigger: AzureFunction = async function (
     }
 
     let customer: ICustomer | null = await container.customerService.find(
-      body.data.customer.email,
-      AuthorizationHelper.getSub(body.data.metadata.accessToken)
+      body.data.customer.email
     );
 
     if (customer) {
@@ -82,23 +80,20 @@ const httpTrigger: AzureFunction = async function (
       };
     }
 
-    customer = await container.customerService.createOrUpdate(
-      {
-        cards: [
-          {
-            authorizationCode: body.data.authorization.authorization_code,
-            bankIdentificationNumber: body.data.authorization.bin,
-            expirationMonth: body.data.authorization.exp_month,
-            expirationYear: body.data.authorization.exp_year,
-            last4Digits: body.data.authorization.last4,
-          },
-        ],
-        emailAddress: body.data.customer.email,
-        metadata: {},
-        name: null,
-      },
-      AuthorizationHelper.getSub(body.data.metadata.accessToken)
-    );
+    customer = await container.customerService.createOrUpdate({
+      cards: [
+        {
+          authorizationCode: body.data.authorization.authorization_code,
+          bankIdentificationNumber: body.data.authorization.bin,
+          expirationMonth: body.data.authorization.exp_month,
+          expirationYear: body.data.authorization.exp_year,
+          last4Digits: body.data.authorization.last4,
+        },
+      ],
+      emailAddress: body.data.customer.email,
+      metadata: {},
+      name: null,
+    });
 
     await container.transactionService.createProcessComplete(
       body.data.metadata.accountReference,
@@ -120,8 +115,7 @@ const httpTrigger: AzureFunction = async function (
         : null,
       body.data.metadata,
       body.data.reference,
-      'credit',
-      AuthorizationHelper.getSub(body.data.metadata.accessToken)
+      'credit'
     );
 
     context.res = {

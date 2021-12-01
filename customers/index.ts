@@ -1,6 +1,6 @@
 import { AzureFunction, Context, HttpRequest } from '@azure/functions';
 import { ICustomer } from 'sqrtledger-core';
-import { Container, AuthorizationHelper } from '../core';
+import { Container } from '../core';
 
 const httpTrigger: AzureFunction = async function (
   context: Context,
@@ -9,24 +9,8 @@ const httpTrigger: AzureFunction = async function (
   try {
     const container = await Container.get();
 
-    const tenantId: string | null = AuthorizationHelper.getSubFromHeader(
-      req.headers['authorization']
-    );
-
-    if (!tenantId) {
-      context.res = {
-        body: {
-          message: 'Unauthorized',
-        },
-        status: 401,
-      };
-
-      return;
-    }
-
     const customer: ICustomer | null = await container.customerService.find(
-      req.params.emailAddress,
-      tenantId
+      req.params.emailAddress
     );
 
     context.res = {
